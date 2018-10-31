@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  gerrit:
+    image: gerritcodereview/gerrit:2.15.6-ubuntu16
+    ports:
+      - "29418:29418"
+      - "8080:8080"
+    depends_on:
+      - ldap
+    volumes:
+      - gerrit-etc-volume:/var/gerrit/etc
+      - gerrit-git-volume:/var/gerrit/git
+      - gerrit-index-volume:/var/gerrit/index
+      - gerrit-cache-volume:/var/gerrit/cache
+      - gerrit-db-volume:/var/gerrit/db
+#    entrypoint: java -jar /var/gerrit/bin/gerrit.war init -d /var/gerrit
+    environment:
+      - CANONICAL_WEB_URL=http://10.0.0.112:8080
+
+  ldap:
+    image: osixia/openldap:1.2.2
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      - LDAP_ORGANISATION="Bankledger Inc."
+#      - LDAP_DOMAIN="bankledger.com"
+      - LDAP_ADMIN_PASSWORD=gerrit20181019
+    volumes:
+      - ldap-volumes:/var/lib/ldap
+      - slapd-volumes:/etc/ldap/slapd.d
+
+  ldap-admin:
+    image: osixia/phpldapadmin:0.7.2
+    ports:
+      - "6443:443"
+#      - "6080:80"
+    links:
+      - ldap
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldap
+#      - PHPLDAPADMIN_HTTPS=false
+#      - PHPLDAPADMIN_LDAP_HOSTS="#PYTHON2BASH:[{'ldap.bankledger.com':[{'server':[{'tls':True}]},{'login':[{'bind_id':'cn=admin,dc=bankledger,dc=com'}]}]}]"
+#    extra_hosts:
+#      - "ldap.bankledger.com:127.0.0.1"
+
+
+volumes:
+  gerrit-etc-volume:
+  gerrit-git-volume:
+  gerrit-index-volume:
+  gerrit-cache-volume:
+  gerrit-db-volume:
+  ldap-volumes:
+  slapd-volumes:
