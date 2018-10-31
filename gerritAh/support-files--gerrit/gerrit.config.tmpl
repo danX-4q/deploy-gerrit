@@ -1,0 +1,28 @@
+[gerrit]
+	basePath = git
+	serverId = ####serverId####
+	canonicalWebUrl = http://f15f79f7eb8b:8080/
+[database]
+	type = h2
+	database = db/ReviewDB
+[index]
+	type = LUCENE
+[auth]
+	type = http
+	gitBasicAuth = true
+[sendemail]
+	smtpServer = localhost
+[sshd]
+	listenAddress = *:29418
+[httpd]
+	listenUrl = http://*:8080/
+	filterClass = com.googlesource.gerrit.plugins.ootb.FirstTimeRedirect
+	firstTimeRedirectUrl = /login/%23%2F?account_id=1000000
+[cache]
+	directory = cache
+[plugins]
+	allowRemoteAdmin = true
+[receive]
+	enableSignedPush = false
+[container]
+	user = root

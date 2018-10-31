@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  httpd:
+    image: httpd:2.4.37-alpine
+    ports:
+      - "80:80"
+    links:
+      - gerrit
+    depends_on:
+      - gerrit
+    volumes:
+      - httpd-conf-volume:/usr/local/apache2/conf
+
+  gerrit:
+    image: gerritcodereview/gerrit:2.15.6-ubuntu16
+    ports:
+      - "29418:29418"
+#      - "80:8080"
+    expose:
+      - "8080"
+    volumes:
+      - gerrit-etc-volume:/var/gerrit/etc
+      - gerrit-git-volume:/var/gerrit/git
+      - gerrit-index-volume:/var/gerrit/index
+      - gerrit-cache-volume:/var/gerrit/cache
+      - gerrit-db-volume:/var/gerrit/db
+#    entrypoint: java -jar /var/gerrit/bin/gerrit.war init -d /var/gerrit
+    environment:
+      - CANONICAL_WEB_URL=http://10.0.0.112
+
+volumes:
+  httpd-conf-volume:
+  gerrit-etc-volume:
+  gerrit-git-volume:
+  gerrit-index-volume:
+  gerrit-cache-volume:
+  gerrit-db-volume:
