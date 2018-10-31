@@ -26,6 +26,7 @@ services:
     environment:
       - LDAP_ORGANISATION="Bankledger Inc."
 #      - LDAP_DOMAIN="bankledger.com"
+#      - LDAP_BASE_DN="dc=bankledger,dc=com"
       - LDAP_ADMIN_PASSWORD=gerrit20181019
     volumes:
       - ldap-volumes:/var/lib/ldap
@@ -40,11 +41,8 @@ services:
       - ldap
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap
-#      - PHPLDAPADMIN_HTTPS=false
-#      - PHPLDAPADMIN_LDAP_HOSTS="#PYTHON2BASH:[{'ldap.bankledger.com':[{'server':[{'tls':True}]},{'login':[{'bind_id':'cn=admin,dc=bankledger,dc=com'}]}]}]"
-#    extra_hosts:
-#      - "ldap.bankledger.com:127.0.0.1"
-
+#    volumes:
+#      - ./support-files--phpldapadmin/login-dn-env.yaml:/container/environment/01-custom/env.yaml
 
 volumes:
   gerrit-etc-volume:
