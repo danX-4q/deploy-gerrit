@@ -28,12 +28,12 @@ function f__set_kv {
 
 function f__set_kv_wr {
         local file="$1"
-	local bgn="$2"
-	local end="$3"
+	local bgn=$(echo "$2" | sed -e 's#[[]#\\[#g' -e 's#[]]#\\]#g')
+	local end=$(echo "$3" | sed -e 's#[[]#\\[#g' -e 's#[]]#\\]#g')
         local key="$4"
         local value="$5"
 
-	sed -i -e '/'"$2"'/,/'"$3"'/ s/\('"$4"'[[:space:]]*=[[:space:]]*\)[^[:space:]]*$/\1'"$5"'/g' "$1"
+	sed -i -e '/'"$bgn"'/,/'"$end"'/ s/\('"$4"'[[:space:]]*=[[:space:]]*\)[^[:space:]]*$/\1'"$5"'/g' "$1"
 }
 
 function f__db_passwd {
