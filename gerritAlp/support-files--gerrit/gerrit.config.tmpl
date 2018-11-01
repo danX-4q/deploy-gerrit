@@ -22,7 +22,14 @@
 	accountEmailAddress = mail
 	password = gerrit20181019
 [sendemail]
-	smtpServer = localhost
+        enable = true
+        smtpServer = smtp.exmail.qq.com
+        smtpServerPort = 465
+        smtpEncryption = SSL
+        sslVerify = true
+        smtpUser = rd-it-system@example.org
+        smtpPass = gerrit20181019
+        from = GerritCodeReview<rd-it-system@example.org>
 [sshd]
 	listenAddress = *:29418
 [httpd]
