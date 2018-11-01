@@ -1,51 +1,67 @@
 #gerritAlp部署说明
 
-## 修改配置
-
-### 数据库密码
-
-* docker-compose.yaml
-
-  services.postgres.environment.POSTGRES_PASSWORD
-
-* support-files--gerrit/gerrit.config.tmpl
-
-  database.password
-
-### ldap的admin密码
-
-此处设置的是ldap的admin密码，而不是在ldap上创建的用于登录gerrit的admin密码。
-
-gerrit.config中配置它，是为了可以通过ldap的接口，向ldap服务器发起请求验证登录gerrit的用户名及密码的正确性。
-
-* docker-compose.yaml
-
-  services.ldap.environment.LDAP_ADMIN_PASSWORD
-
-* support-files--gerrit/gerrit.config.tmpl
-
-  ldap.password
-
-### CANONICAL_WEB_URL
-
-配置为当前服务集群面向最终用户的入口url，一般是本机开放对外访问的ip及端口(镜像的8080对应的宿主机端口)。如果当前服务集群还有前置网关或反向代理，则设置为网关或代理的ip及端口。
-
-* docker-compose.yaml
-
-  services.gerrit.environment.CANONICAL_WEB_URL
-
-### 补充说明
-
-* 常规将ldap的dn改为dn=bankledger,dn=com，调试不出来。
-
-## 运行脚本
+docker + docker-compose + gerrit + ladp + phpldapadmin + postgresql
 
 ```shell
 #必须先进入此目录
 cd deploy_gerrit/gerritAlp
 ```
 
-后续所有脚本，均需在进入deploy_gerrit/gerritAlp目录后执行
+要求后续的shell命令都在此目录中操作。
+
+## 修改配置
+
+### 定制敏感配置项
+
+源码自带的sensitive.conf.example，仅作示例；搭建实用环境时，均需定制敏感配置项。
+
+```shell
+cp sensitive.conf.example sensitive.conf.<label> #for example: sensitive.conf.danX
+```
+
+```vi sensitive.conf.<label> ```按照配置文件逐项设置：
+
+* DB_PASSWORD
+
+  数据库密码。
+
+* LDAP_ADMIN_PASSWORD
+
+  ldap的admin密码，而不是在ldap上创建的用于登录gerrit的admin密码。
+
+  gerrit.config中配置它，是为了可以通过ldap的接口，向ldap服务器发起请求验证登录gerrit的用户名及密码的正确性。
+
+* CANONICAL_WEB_URL
+
+  配置为当前服务集群面向最终用户的入口url，一般是本机开放对外访问的ip及端口(镜像的8080对应的宿主机端口)。如果当前服务集群还有前置网关或反向代理，则设置为网关或代理的ip及端口。
+
+* SMTP_USER
+
+  gerrit自动发送邮件时使用的email账户。
+
+* SMTP_PASSWORD
+
+  SMTP_USER的密码。
+
+* SMTP_FROM
+
+  gerrit自动发送邮件时使用的发件人。
+
+### 生效敏感配置
+
+```shell
+./sync-sensitive-setting.sh -f sensitive.conf.<label> #for example: sensitive.conf.danX
+```
+
+### 修改通用配置项
+
+建议专业人员根据自身需要进行深度定制，主要集中在docker-compose.yaml、support-files--gerrit/gerrit.config.tmpl两个文件；此处不展开描述。
+
+### 补充说明
+
+* 尝试将ldap的dn改为dn=bankledger,dn=com，调试不出来。
+
+## 运行脚本
 
 ### setup-once
 
