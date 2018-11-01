@@ -1,0 +1,12 @@
+
+DB_PASSWORD="gerrit20181019"
+
+LDAP_ADMIN_PASSWORD="gerrit20181019"
+
+CANONICAL_WEB_URL="http://127.0.0.1:8080"
+
+SMTP_USER="rd-it-system@example.org"
+SMTP_PASSWORD="gerrit20181019"
+SMTP_FROM="GerritCodeReview<rd-it-system@example.org>"
+
+

@@ -19,7 +19,7 @@ services:
       - gerrit-db-volume:/var/gerrit/db
 #init    entrypoint: java -jar /var/gerrit/bin/gerrit.war init -d /var/gerrit
     environment:
-      - CANONICAL_WEB_URL=http://10.0.0.112:8080
+      - CANONICAL_WEB_URL=http://127.0.0.1:8080
 
   postgres:
     image: postgres:9.6
