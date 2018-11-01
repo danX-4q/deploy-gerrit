@@ -1,4 +1,4 @@
-#gerritAlp部署说明
+# gerritAlp部署说明
 
 docker + docker-compose + gerrit + ladp + phpldapadmin + postgresql
 
